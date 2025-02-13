@@ -1,4 +1,5 @@
 ﻿using ManagementSystem.Application.CQRS.Categories.Commands.Requests;
+using ManagementSystem.Application.CQRS.Categories.Queries.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,4 +16,10 @@ public class CategoryController(ISender sender) : ControllerBase
     {
         return Ok(await _sender.Send(request));
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll([FromQuery] GetAllCategoryRequest request)
+    {
+        return Ok(await _sender.Send(request));
+    } 
 }
