@@ -1,10 +1,15 @@
-var builder = WebApplication.CreateBuilder(args);
+using ManagementSystem.DAL.SqlServer;
+using ManagementSystem.Application;
 
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+var connectionString = builder.Configuration.GetConnectionString("MyConn");
 
+builder.Services.AddSqlServerServices(connectionString);
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
