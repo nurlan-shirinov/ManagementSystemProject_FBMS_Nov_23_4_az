@@ -1,6 +1,6 @@
 ﻿using ManagementSystem.Application.CQRS.Categories.Commands.Requests;
 using ManagementSystem.Application.CQRS.Categories.Commands.Responses;
-using ManagementSystem.Common.GlobalResponses;
+using ManagementSystem.Common.Exceptions;
 using ManagementSystem.Common.GlobalResponses.Generics;
 using ManagementSystem.Domain.Entities;
 using ManagementSystem.Repository.Common;
@@ -22,12 +22,14 @@ public class CreateCategoryHandler(IUnitOfWork unitOfWork) : IRequestHandler<Cre
 
         if (string.IsNullOrEmpty(newCategory.Name))
         {
-            return new Result<CreateCategoryResponse>
-            {
-                Data = null,
-                Errors = ["Categoriyanin adi null ve ya bosh ola bilmez"],
-                IsSuccess = false
-            };
+            //return new Result<CreateCategoryResponse>
+            //{
+            //    Data = null,
+            //    Errors = ["Categoriyanin adi null ve ya bosh ola bilmez"],
+            //    IsSuccess = false
+            //};
+
+            throw new BadRequestException("Categoriyanin adi null ve ya bosh ola bilmez");
         }
 
         await _unitOfWork.CategoryRepository.AddAsync(newCategory);

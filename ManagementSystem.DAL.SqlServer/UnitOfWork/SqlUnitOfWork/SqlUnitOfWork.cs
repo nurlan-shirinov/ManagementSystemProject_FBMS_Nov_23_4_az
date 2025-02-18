@@ -12,7 +12,12 @@ public class SqlUnitOfWork(string connectionString, AppDbContext context) : IUni
     private readonly AppDbContext _context = context;
 
     public SqlCategoryRepository _categoryRepository;
+    public SqlCustomerRepository _customerRepository;
+    
 
 
     public ICategoryRepository CategoryRepository => _categoryRepository ?? new SqlCategoryRepository(_connectionString , _context);
+
+    public ICustomerRepository CustomerRepository => _customerRepository ?? new SqlCustomerRepository(_context);
+
 }
