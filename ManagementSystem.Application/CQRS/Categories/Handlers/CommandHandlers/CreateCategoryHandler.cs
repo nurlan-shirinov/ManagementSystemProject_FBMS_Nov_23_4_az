@@ -1,4 +1,5 @@
-﻿using ManagementSystem.Application.CQRS.Categories.Commands.Requests;
+﻿using AutoMapper;
+using ManagementSystem.Application.CQRS.Categories.Commands.Requests;
 using ManagementSystem.Application.CQRS.Categories.Commands.Responses;
 using ManagementSystem.Common.Exceptions;
 using ManagementSystem.Common.GlobalResponses.Generics;
@@ -8,37 +9,23 @@ using MediatR;
 
 namespace ManagementSystem.Application.CQRS.Categories.Handlers.CommandHandlers;
 
-public class CreateCategoryHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateCategoryRequest, Result<CreateCategoryResponse>>
+public class CreateCategoryHandler(IUnitOfWork unitOfWork, IMapper mapper) : IRequestHandler<CreateCategoryRequest, Result<CreateCategoryResponse>>
 {
-
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper=mapper;
 
     public async Task<Result<CreateCategoryResponse>> Handle(CreateCategoryRequest request, CancellationToken cancellationToken)
     {
-        Category newCategory = new()
-        {
-            Name = request.Name
-        };
+        var newCategory = _mapper.Map<Category>(request);
 
         if (string.IsNullOrEmpty(newCategory.Name))
         {
-            //return new Result<CreateCategoryResponse>
-            //{
-            //    Data = null,
-            //    Errors = ["Categoriyanin adi null ve ya bosh ola bilmez"],
-            //    IsSuccess = false
-            //};
-
             throw new BadRequestException("Categoriyanin adi null ve ya bosh ola bilmez");
         }
 
         await _unitOfWork.CategoryRepository.AddAsync(newCategory);
 
-        CreateCategoryResponse response = new()
-        {
-            Id = newCategory.Id,
-            Name = request.Name,
-        };
+        var response = _mapper.Map<CreateCategoryResponse>(newCategory);
 
         return new Result<CreateCategoryResponse>
         {
