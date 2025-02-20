@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using ManagementSystem.Application.CQRS.Users.Handlers.Commands;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static ManagementSystem.Application.CQRS.Users.Handlers.Queries.GetByEmail;
 
@@ -19,4 +20,11 @@ public class UserController(IMediator mediator) : ControllerBase
         return Ok(await _mediator.Send(request));
     }
 
+
+    [HttpDelete]
+    public async Task<IActionResult> Delete([FromQuery] int id)
+    {
+        var request = new Delete.Command() { Id = id };
+        return Ok(await _mediator.Send(request));
+    }
 }

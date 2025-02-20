@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ManagementSystem.Application.CQRS.Categories.Commands.Requests;
 using ManagementSystem.Application.CQRS.Categories.Commands.Responses;
+using ManagementSystem.Application.CQRS.Categories.Queries.Responses;
 using ManagementSystem.Domain.Entities;
 
 namespace ManagementSystem.Application.AutoMapper;
@@ -11,5 +12,6 @@ public class MappingProfile:Profile
     {
         CreateMap<CreateCategoryRequest , Category>().ReverseMap();
         CreateMap<Category, CreateCategoryResponse>();
+        CreateMap< Category , GetAllCategoryResponse>();
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ManagementSystem.Application.CQRS.Users.DTOs;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ManagementSystem.Application.CQRS.Users.DTOs;
 
 public class GetByEmailDto
 {

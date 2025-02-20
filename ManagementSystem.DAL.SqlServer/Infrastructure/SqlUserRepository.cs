@@ -42,6 +42,8 @@ public class SqlUserRepository(AppDbContext context) : IUserRepository
         currentUser.IsDeleted = true;
         currentUser.DeletedDate = DateTime.Now;
         currentUser.DeletedBy = 1;
+        _context.Users.Update(currentUser);
+        _context.SaveChanges();
     }
 
     public void Update(User user)

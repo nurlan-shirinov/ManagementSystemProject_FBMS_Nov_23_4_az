@@ -25,6 +25,8 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
                     break;
 
                 default:
+                    message = [error.Message];
+                    await WriteError(context, HttpStatusCode.InternalServerError, message);
                     break;
             }
         }

@@ -1,4 +1,5 @@
-﻿using ManagementSystem.Application.CQRS.Customers.Commands.Requests;
+﻿using FluentValidation;
+using ManagementSystem.Application.CQRS.Customers.Commands.Requests;
 using ManagementSystem.Application.CQRS.Customers.Commands.Responses;
 using ManagementSystem.Common.GlobalResponses.Generics;
 using ManagementSystem.Domain.Entities;
@@ -10,6 +11,7 @@ namespace ManagementSystem.Application.CQRS.Customers.Handlers.CommandHandler;
 public class CreateCustmerHandler(IUnitOfWork unitOfWork) : IRequestHandler<CreateCustomerRequest, Result<CreateCustomerResponse>>
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+
 
     public async Task<Result<CreateCustomerResponse>> Handle(CreateCustomerRequest request, CancellationToken cancellationToken)
     {
