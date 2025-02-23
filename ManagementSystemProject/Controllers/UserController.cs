@@ -1,7 +1,6 @@
 ﻿using ManagementSystem.Application.CQRS.Users.Handlers.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static ManagementSystem.Application.CQRS.Users.Handlers.Commands.Register;
 using static ManagementSystem.Application.CQRS.Users.Handlers.Queries.GetByEmail;
 
 namespace ManagementSystemProject.Controllers;
@@ -31,7 +30,13 @@ public class UserController(IMediator mediator) : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody] Command request)
+    public async Task<IActionResult> Register([FromBody] Register.Command request)
+    {
+        return Ok(await _mediator.Send(request));
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] Update.Command request)
     {
         return Ok(await _mediator.Send(request));
     }

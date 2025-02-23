@@ -52,5 +52,6 @@ public class SqlUserRepository(AppDbContext context) : IUserRepository
         user.UpdatedDate = DateTime.Now;
         user.UpdatedBy = 1;
         _context.Users.Update(user);
+        _context.SaveChanges();
     }
 }
