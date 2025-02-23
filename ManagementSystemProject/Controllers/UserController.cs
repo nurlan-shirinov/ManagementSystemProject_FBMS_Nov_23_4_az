@@ -1,6 +1,7 @@
 ﻿using ManagementSystem.Application.CQRS.Users.Handlers.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static ManagementSystem.Application.CQRS.Users.Handlers.Commands.Register;
 using static ManagementSystem.Application.CQRS.Users.Handlers.Queries.GetByEmail;
 
 namespace ManagementSystemProject.Controllers;
@@ -27,4 +28,12 @@ public class UserController(IMediator mediator) : ControllerBase
         var request = new Delete.Command() { Id = id };
         return Ok(await _mediator.Send(request));
     }
+
+
+    [HttpPost]
+    public async Task<IActionResult> Register([FromBody] Command request)
+    {
+        return Ok(await _mediator.Send(request));
+    }
+
 }

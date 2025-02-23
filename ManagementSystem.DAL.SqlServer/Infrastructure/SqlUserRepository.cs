@@ -30,6 +30,7 @@ public class SqlUserRepository(AppDbContext context) : IUserRepository
         user.CreatedDate = DateTime.Now;
         user.CreatedBy = 1;
         await _context.Users.AddAsync(user);
+        await _context.SaveChangesAsync();
     }
 
     public void Remove(int id)

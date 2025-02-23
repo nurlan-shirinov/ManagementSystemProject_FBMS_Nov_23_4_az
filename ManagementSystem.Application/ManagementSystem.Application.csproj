@@ -19,8 +19,4 @@
     <ProjectReference Include="..\ManagementSystem.Repository\ManagementSystem.Repository.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\Users\Validators\" />
-  </ItemGroup>
-
 </Project>
