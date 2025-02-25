@@ -24,6 +24,11 @@ public class ExceptionHandlerMiddleware(RequestDelegate next)
                     await WriteError(context, HttpStatusCode.BadRequest, message);
                     break;
 
+                case TooManyRequestException:
+                    message = [error.Message];
+                    await WriteError(context, HttpStatusCode.TooManyRequests, message);
+                    break;
+
                 default:
                     message = [error.Message];
                     await WriteError(context, HttpStatusCode.InternalServerError, message);

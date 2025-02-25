@@ -9,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("MyConn");
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSqlServerServices(connectionString);
 builder.Services.AddApplicationServices();
 
@@ -24,6 +25,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+
+app.UseMiddleware<RateLimitMiddleware>(2, TimeSpan.FromMinutes(1));
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 //Custom middlewares
 
