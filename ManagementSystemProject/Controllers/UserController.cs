@@ -36,7 +36,7 @@ public class UserController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] Update.Command request)
+    public async Task<IActionResult> Update([FromQuery] Update.Command request)
     {
         return Ok(await _mediator.Send(request));
     }
