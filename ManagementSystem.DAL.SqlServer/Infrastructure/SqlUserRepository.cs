@@ -17,7 +17,8 @@ public class SqlUserRepository(AppDbContext context) : IUserRepository
 
     public async Task<User> GetByEmailAsync(string email)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsDeleted == false);
+            var a = await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.IsDeleted == false);
+        return a;
     }
 
     public async Task<User> GetByIdAsync(int id)

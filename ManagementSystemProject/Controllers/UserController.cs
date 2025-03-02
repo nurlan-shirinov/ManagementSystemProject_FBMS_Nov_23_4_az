@@ -1,5 +1,5 @@
-﻿using ManagementSystem.Application.CQRS.Users.Handlers.Commands;
-using MediatR;
+﻿using MediatR;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using static ManagementSystem.Application.CQRS.Users.Handlers.Queries.GetByEmail;
 
@@ -24,19 +24,26 @@ public class UserController(IMediator mediator) : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> Delete([FromQuery] int id)
     {
-        var request = new Delete.Command() { Id = id };
+        var request = new ManagementSystem.Application.CQRS.Users.Handlers.Commands.Delete.Command() { Id = id };
         return Ok(await _mediator.Send(request));
     }
 
 
     [HttpPost]
-    public async Task<IActionResult> Register([FromBody] Register.Command request)
+    public async Task<IActionResult> Register([FromBody] ManagementSystem.Application.CQRS.Users.Handlers.Commands.Register.Command request)
     {
         return Ok(await _mediator.Send(request));
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromQuery] Update.Command request)
+    public async Task<IActionResult> Update([FromBody] ManagementSystem.Application.CQRS.Users.Handlers.Commands.Register.Command request)
+    {
+        return Ok(await _mediator.Send(request));
+    }
+
+
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login([FromBody] ManagementSystem.Application.CQRS.Users.Handlers.Commands.Login.LoginRequest request)
     {
         return Ok(await _mediator.Send(request));
     }

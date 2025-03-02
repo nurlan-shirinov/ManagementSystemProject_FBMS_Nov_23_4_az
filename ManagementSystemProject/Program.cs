@@ -1,6 +1,7 @@
 using ManagementSystem.DAL.SqlServer;
 using ManagementSystem.Application;
 using ManagementSystemProject.Middlewares;
+using ManagementSystemProject.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +10,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 var connectionString = builder.Configuration.GetConnectionString("MyConn");
 
-builder.Services.AddSqlServerServices(connectionString);
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSqlServerServices(connectionString!);
 builder.Services.AddApplicationServices();
+builder.Services.AddAuthenticationDependency(builder.Configuration);
 
 var app = builder.Build();
 
@@ -24,6 +27,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+
+app.UseMiddleware<RateLimitMiddleware>(2, TimeSpan.FromMinutes(1));
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 //Custom middlewares
 
