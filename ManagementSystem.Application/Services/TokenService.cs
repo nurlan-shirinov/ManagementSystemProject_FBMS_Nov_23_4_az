@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ManagementSystem.Application.Services;
@@ -16,10 +17,19 @@ public static class TokenService
             issuer: configuration["JWT:ValidIssuer"],
             audience: configuration["JWT:ValidAudience"],
             claims: authClaims,
+            expires: DateTime.Now.AddMinutes(Double.Parse(configuration.GetRequiredSection("JWT").GetRequiredSection("AccessTokenExpirationMinutes").Value!)),
             signingCredentials: new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
             );
 
         return token;
 
+    }
+
+    public static string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[64];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }

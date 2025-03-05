@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using static ManagementSystem.Application.CQRS.Users.Handlers.Commands.RefreshToken;
 using static ManagementSystem.Application.CQRS.Users.Handlers.Queries.GetByEmail;
 
 namespace ManagementSystemProject.Controllers;
@@ -44,6 +45,12 @@ public class UserController(IMediator mediator) : ControllerBase
 
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] ManagementSystem.Application.CQRS.Users.Handlers.Commands.Login.LoginRequest request)
+    {
+        return Ok(await _mediator.Send(request));
+    }
+
+    [HttpPost("RefreshToken")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenReuqest request)
     {
         return Ok(await _mediator.Send(request));
     }

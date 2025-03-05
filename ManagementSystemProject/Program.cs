@@ -28,7 +28,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 
-app.UseMiddleware<RateLimitMiddleware>(2, TimeSpan.FromMinutes(1));
+//app.UseMiddleware<RateLimitMiddleware>(2, TimeSpan.FromMinutes(1));
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 //Custom middlewares
 

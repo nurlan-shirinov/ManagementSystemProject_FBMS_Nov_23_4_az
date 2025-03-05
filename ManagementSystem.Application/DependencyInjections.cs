@@ -26,7 +26,7 @@ public static class DependencyInjections
         services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-        services.AddHostedService<DeleteUserBackgroundService>();
+        //services.AddHostedService<DeleteUserBackgroundService>();
 
         return services;
     }
