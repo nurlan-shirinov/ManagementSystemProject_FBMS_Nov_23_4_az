@@ -1,25 +1,24 @@
 ﻿using ManagementSystem.Application.CQRS.Categories.Commands.Requests;
 using ManagementSystem.Application.CQRS.Categories.Queries.Requests;
-using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ManagementSystemProject.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CategoryController(ISender sender) : ControllerBase
+public class CategoryController : BaseController
 {
-    private readonly ISender _sender = sender;
-
     [HttpPost]
+    [Authorize(Roles ="Admin")]
     public async Task<IActionResult> Create([FromBody] CreateCategoryRequest request)
     {
-        return Ok(await _sender.Send(request));
+        return Ok(await Sender.Send(request));
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] GetAllCategoryRequest request)
     {
-        return Ok(await _sender.Send(request));
+        return Ok(await Sender.Send(request));
     } 
 }

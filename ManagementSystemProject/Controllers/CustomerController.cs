@@ -6,13 +6,13 @@ namespace ManagementSystemProject.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class CustomerController(ISender sender) : ControllerBase
+public class CustomerController: BaseController
 {
-    private readonly ISender _sender = sender;
+
 
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateCustomerRequest request)
     {
-        return Ok(await _sender.Send(request));
+        return Ok(await Sender.Send(request));
     }
 }
