@@ -7,9 +7,9 @@ namespace ManagementSystemProject.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : BaseController
+public class UserController(ILogger<UserController> logger) : BaseController
 {
-
+    private readonly ILogger<UserController> _logger = logger;
 
     [HttpGet]
     public async Task<IActionResult> GetByEmailAsync([FromQuery] string email)
@@ -44,6 +44,7 @@ public class UserController : BaseController
     [AllowAnonymous]
     public async Task<IActionResult> Login([FromBody] ManagementSystem.Application.CQRS.Users.Handlers.Commands.Login.LoginRequest request)
     {
+        _logger.LogInformation("Test NLog");
         return Ok(await Sender.Send(request));
     }
 
