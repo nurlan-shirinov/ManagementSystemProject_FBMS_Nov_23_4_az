@@ -1,5 +1,6 @@
 ﻿using ManagementSystem.Application.CQRS.Users.DTOs;
 using ManagementSystem.Application.Services;
+using ManagementSystem.Application.Services.LoggingService;
 using ManagementSystem.Common.Exceptions;
 using ManagementSystem.Common.GlobalResponses.Generics;
 using ManagementSystem.Common.Security;
@@ -20,18 +21,28 @@ public class Login
         public string Password { get; set; }
     }
 
-    public sealed class Handler(IUnitOfWork unitOfWork, IConfiguration configuration) : IRequestHandler<LoginRequest, Result<LoginDto>>
+    public sealed class Handler(IUnitOfWork unitOfWork, IConfiguration configuration, ILoggerService logger) : IRequestHandler<LoginRequest, Result<LoginDto>>
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork;
         private readonly IConfiguration _configuration = configuration;
-
+        private readonly ILoggerService _logger = logger;
         public async Task<Result<LoginDto>> Handle(LoginRequest request, CancellationToken cancellationToken)
         {
-            User user = await _unitOfWork.UserRepository.GetByEmailAsync(request.Email) ?? throw new BadRequestException($"Invalid Email : {request.Email}");
+            _logger.LogInfo($"Logging attempt  : {request.Email}");
+
+            User user = await _unitOfWork.UserRepository.GetByEmailAsync(request.Email);
+
+            if (user == null)
+            {
+                _logger.LogWarning($"User does not exist with email: {request.Email}");
+                throw new BadRequestException($"Invalid Email : {request.Email}");
+            }
+
             var hashedPassword = PasswordHasher.ComputeStringToSha256Hash(request.Password);
 
             if (user.PasswordHash != hashedPassword)
             {
+                _logger.LogWarning($"Log in Fail due to password does not match");
                 throw new BadRequestException("Invalid password");
             }
 
@@ -62,8 +73,11 @@ public class Login
                 await _unitOfWork.RefreshTokenRepository.SaveRefreshToken(saveRefreshToken);
                 await _unitOfWork.SaveChange();
 
+                _logger.LogInfo($"User entered website successfully: {request.Email}");
                 return new Result<LoginDto> { Data = response };
             }
+
+            _logger.LogWarning($"Log in Fail with any unknown reason");
 
             return new Result<LoginDto>()
             {
